@@ -1,0 +1,46 @@
+﻿@page "/fetchdata"
+@using esiteServer.Shared
+@inject HttpClient Http
+
+<PageTitle>Weather forecast</PageTitle>
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Password</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <td>@forecast.Id</td>
+                    <td>@forecast.Email</td>
+                    <td>@forecast.Password</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    Login[]? forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await Http.GetFromJsonAsync<Login[]>("/Logins");
+        StateHasChanged();
+    }
+}
